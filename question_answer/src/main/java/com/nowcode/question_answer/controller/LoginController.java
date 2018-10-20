@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
+/**
+ *    2018/10/20
+ */
 
 @Controller
 public class LoginController {
@@ -21,6 +25,14 @@ public class LoginController {
 
     @Autowired
     UserService userService;
+
+    @RequestMapping(path = {"/logout"},method = {RequestMethod.GET})
+    public String logout(@CookieValue("ticket") String ticket){
+        userService.logout(ticket);
+        return "redirect:/";
+    }
+
+
     //登录请求
     @RequestMapping(path = {"/login/"},method = {RequestMethod.POST})
     public String login(Model model,
@@ -30,6 +42,7 @@ public class LoginController {
                         HttpServletResponse response){
         try{
             Map<String, String> loginMap = userService.login(username, password);
+
             if(loginMap.containsKey("ticket")){
                 Cookie cookie = new Cookie("ticket",loginMap.get("ticket"));
                 cookie.setPath("/");

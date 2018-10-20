@@ -19,6 +19,11 @@ public class UserService {
     @Autowired
     LoginTicketDAO loginTicketDAO;
 
+    //退出登录
+    public void logout(String ticket){
+        loginTicketDAO.updateStatus(ticket,1);
+    }
+
     //添加用于判断用户是否在线的ticket
     public String addLoginTicket(int userID){
         LoginTicket loginTicket = new LoginTicket();
@@ -32,7 +37,7 @@ public class UserService {
         return loginTicket.getTicket();
     }
 
-    //完成登录逻辑判断
+    //登录,完成逻辑判断
     public Map<String,String> login(String username,String password){
         Map<String,String> map = new HashMap<>();
 
