@@ -70,7 +70,10 @@ public class InitDataBaseTest {
 		// 一般的原因是Mapper interface和xml文件的定义对应不上
 //		List<Question> questionList = questionDAO.selectLatestQuestions(0,0,10);
 //		System.out.println(questionList);
-		System.out.println(userDAO.findUserById(1).getUsername());
+		List<Question> questionList = questionDAO.selectLatestQuestions(0, 0, 10);
+		for(Question question:questionList){
+			System.out.println(question.getUserID()+":"+question.getCommentCount());
+		}
 	}
 
 	@Test
