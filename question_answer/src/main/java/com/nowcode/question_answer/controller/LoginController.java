@@ -1,6 +1,7 @@
 package com.nowcode.question_answer.controller;
 
 import com.nowcode.question_answer.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class LoginController {
                         @RequestParam("username") String username,
                         @RequestParam("password") String password,
                         @RequestParam(value = "rememberme",defaultValue = "false") boolean rememberme,
+                        @RequestParam(value = "next",required = false) String next,
                         HttpServletResponse response){
         try{
             Map<String, String> loginMap = userService.login(username, password);
@@ -47,6 +49,8 @@ public class LoginController {
                 Cookie cookie = new Cookie("ticket",loginMap.get("ticket"));
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                if(StringUtils.isNotBlank(next))
+                    return "redirect:"+next;
                 return "redirect:/";
             } else {
                 model.addAttribute("msg",loginMap.get("msg"));
@@ -63,6 +67,7 @@ public class LoginController {
     public String register(Model model,
                            @RequestParam("username") String username,
                            @RequestParam("password") String password,
+                           @RequestParam(value = "next",required = false) String next,
                            HttpServletResponse response){
 
         try{
@@ -71,6 +76,9 @@ public class LoginController {
                 Cookie cookie = new Cookie("ticket",regMap.get("ticket"));
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                if(StringUtils.isNotBlank(next))
+                    //判断是否需要跳转
+                    return "redirect:"+next;
                 return "redirect:/";
             } else {
                 model.addAttribute("msg",regMap.get("msg"));
@@ -85,7 +93,9 @@ public class LoginController {
 
     //登录注册页面
     @RequestMapping(path = {"/regLogin"},method = {RequestMethod.GET})
-    public String regLogin(Model model){
+    public String regLogin(Model model,
+                           @RequestParam(value = "next",required = false) String next){
+        model.addAttribute("next",next);
         return "login";
     }
 
