@@ -13,6 +13,10 @@ public class QuestionService {
     @Autowired
     QuestionDAO questionDAO;
 
+    public int addQuestion(Question question){
+       return questionDAO.addQuestion(question)>0?question.getId():0;
+    }
+
     public List<Question> getLatestQuestions(int userID,int offset,int limit){
         return questionDAO.selectLatestQuestions(userID,offset,limit);
     }
