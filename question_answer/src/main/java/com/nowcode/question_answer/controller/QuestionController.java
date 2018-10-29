@@ -27,13 +27,15 @@ public class QuestionController {
     public String addQuestion(@RequestParam("title") String title,
                               @RequestParam("content") String content){
         try{
+            //新问题
             Question question = new Question();
             question.setTitle(title);
             question.setContent(content);
             question.setCreatedDate(new Date());
             question.setCommentCount(0);
             if(hostHolder.getUser()==null){
-                question.setUserID(MyUtils.ANONYMOUS_USER_ID);
+                //question.setUserID(MyUtils.ANONYMOUS_USER_ID);
+                return MyUtils.getJSONString(999);
             }else{
                 question.setUserID(hostHolder.getUser().getId());
             }
