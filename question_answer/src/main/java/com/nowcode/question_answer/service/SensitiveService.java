@@ -1,6 +1,5 @@
 package com.nowcode.question_answer.service;
 
-import com.nowcode.question_answer.controller.QuestionController;
 import org.apache.commons.lang.CharUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,13 +20,6 @@ public class SensitiveService implements InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(SensitiveService.class);
     private TreeNode rootNode = new TreeNode();//根节点
-
-    public static void main(String args[]){
-        SensitiveService sensitiveService = new SensitiveService();
-        sensitiveService.addWord("色情");
-        sensitiveService.addWord("赌博");
-        System.out.println(sensitiveService.filter(" 你好色 情"));
-    }
 
     //过滤敏感词
     public String filter(String text){
@@ -117,7 +108,7 @@ public class SensitiveService implements InitializingBean {
         }
     }
 
-    //判断字符是否是符号
+    //判断字符是否是符号,用于过滤文本中的特殊字符
     private boolean isSymbol(char c){
         int ic = (int) c;
         return !CharUtils.isAsciiAlphanumeric(c)&&(ic < 0x2E80 || ic > 0x9FFF);
