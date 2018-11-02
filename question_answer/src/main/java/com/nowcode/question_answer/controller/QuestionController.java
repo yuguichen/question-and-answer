@@ -1,7 +1,7 @@
 package com.nowcode.question_answer.controller;
 
-import com.nowcode.question_answer.model.HostHolder;
-import com.nowcode.question_answer.model.Question;
+import com.nowcode.question_answer.model.*;
+import com.nowcode.question_answer.service.CommentService;
 import com.nowcode.question_answer.service.QuestionService;
 import com.nowcode.question_answer.service.UserService;
 import com.nowcode.question_answer.utils.MyUtils;
@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class QuestionController {
@@ -24,6 +26,8 @@ public class QuestionController {
     UserService userService;
     @Autowired
     HostHolder hostHolder;
+    @Autowired
+    CommentService commentService;
 
     /**
      * 提问
@@ -61,11 +65,28 @@ public class QuestionController {
     }
 
 
+    /**
+     * 评论中心
+     * @param model
+     * @param qid
+     * @return
+     */
     @RequestMapping(value = {"/question/{qid}"})
     public String questionDetail(Model model, @PathVariable("qid") int qid){
         Question question = questionService.selectByID(qid);
         model.addAttribute("question",question);
         model.addAttribute("user",userService.getUser(question.getUserID()));
+
+        List<Comment> comments = commentService.getCommentsByEntity(qid,EntityType.ENTITY_QUESTION);
+        List<ViewObject> commentsVOList = new ArrayList<>();
+        for(Comment comment : comments){
+            ViewObject viewObject = new ViewObject();
+            viewObject.set("comment",comment);
+            viewObject.set("user",userService.getUser(comment.getUserId()));
+            commentsVOList.add(viewObject);
+        }
+        model.addAttribute("comments",commentsVOList);
+
         return "detail";
     }
 
