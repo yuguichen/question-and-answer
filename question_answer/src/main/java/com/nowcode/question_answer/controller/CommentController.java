@@ -52,7 +52,7 @@ public class CommentController {
             comment.setStatus(0);
             //addComment
             commentService.addComment(comment);
-
+            //评论数量
             int count = commentService.getCommentCount(comment.getEntityId(),comment.getEntityType());
             questionService.updateCommentCount(count,comment.getEntityId());
 

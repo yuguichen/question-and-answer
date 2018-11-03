@@ -29,12 +29,10 @@ public class HomeController {
 
     private List<ViewObject> getQuestions(int userID,int offset,int limit){
         List<ViewObject> viewObjectList = new ArrayList<>();
-
         List<Question> questionList = questionService.getLatestQuestions(userID,offset,limit);
         for(Question question : questionList){
             ViewObject viewObject = new ViewObject();
             viewObject.set("question",question);
-            //System.out.println(question.getUserID());
             viewObject.set("user",userService.getUser(question.getUserID()));
             viewObjectList.add(viewObject);
         }
