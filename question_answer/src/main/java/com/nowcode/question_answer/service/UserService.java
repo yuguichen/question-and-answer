@@ -94,4 +94,8 @@ public class UserService {
         return userDAO.findUserById(id);
     }
 
+    public User getUserByName(String username){
+        return  userDAO.findUserByName(username);
+    }
+
 }

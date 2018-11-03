@@ -24,10 +24,16 @@ public interface MessageDAO {
                                               @Param("offset") int offset, @Param("limit") int limit);
 
     //未读信息数
-    @Select({"select",SELECT_FIELDS,"from",TABLE_NAME,
+    @Select({"select count(id) from",TABLE_NAME,
             "where conversation_id=#{conversationId} and has_read=0 and to_id=#{userId}"})
     int getConversationUnreadCount(@Param("userId") int userId,
                                    @Param("conversationId") String conversationId);
 
+
+    @Select({"select ",INSERT_FIELDS,",count(id) as id from (select * from ",TABLE_NAME,
+            "where from_id=#{userId} or to_id=#{userId} order by id desc) tt group by conversation_id order by created_date desc limit #{offset}, #{limit}"})
+    List<Message> getConversationList(@Param("userId") int userId,
+                                      @Param("offset") int offset,
+                                      @Param("limit") int limit);
 
 }

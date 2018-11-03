@@ -2,9 +2,9 @@ package com.nowcode.question_answer.service;
 
 import com.nowcode.question_answer.dao.CommentDAO;
 import com.nowcode.question_answer.model.Comment;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
@@ -13,8 +13,13 @@ public class CommentService {
 
     @Autowired
     CommentDAO commentDAO;
+    @Autowired
+    SensitiveService sensitiveService;
 
     public int addComment(Comment comment){
+        //过滤评论内容
+        comment.setContent(HtmlUtils.htmlEscape(comment.getContent()));
+        comment.setContent(sensitiveService.filter(comment.getContent()));
         return commentDAO.addComment(comment);
     }
 
