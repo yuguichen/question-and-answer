@@ -17,6 +17,7 @@ public class MessageService {
     SensitiveService sensitiveService;
 
     public int addMessage(Message message){
+        //过滤信息内容
         message.setContent(sensitiveService.filter( HtmlUtils.htmlEscape(message.getContent()) ));
         return messageDAO.addMessage(message);
     }
@@ -31,5 +32,9 @@ public class MessageService {
 
     public int getConversationUnreadCount(int userId,String conversationId){
         return messageDAO.getConversationUnreadCount(userId,conversationId);
+    }
+
+    public void updateHasRead(int hasRead, String conversationId, int userId){
+        messageDAO.updateHasRead(hasRead,conversationId,userId);
     }
 }

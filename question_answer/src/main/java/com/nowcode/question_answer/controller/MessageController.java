@@ -62,12 +62,15 @@ public class MessageController {
             List<Message> messagerList = messageService.getMessagerByConversationId(conversationId, 0, 10);
             List<ViewObject> messages = new ArrayList<>();
             for(Message message:messagerList){
+
                 ViewObject viewObject = new ViewObject();
                 viewObject.set("message",message);
                 viewObject.set("user",userService.getUser(message.getFromId()));
                 messages.add(viewObject);
             }
             model.addAttribute("messages",messages);
+            //更新未读记录
+            messageService.updateHasRead(1,conversationId,hostHolder.getUser().getId());
         }catch (Exception e){
             logger.error("获取详情失败:"+e.getMessage());
         }

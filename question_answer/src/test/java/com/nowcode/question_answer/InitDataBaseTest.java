@@ -4,6 +4,7 @@ import com.nowcode.question_answer.dao.QuestionDAO;
 import com.nowcode.question_answer.dao.UserDAO;
 import com.nowcode.question_answer.model.Question;
 import com.nowcode.question_answer.model.User;
+import com.nowcode.question_answer.utils.SaltUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,12 +56,15 @@ public class InitDataBaseTest {
 
 	@Test
 	public void updateTest(){
-		Random random = new Random();
+		//Random random = new Random();
 		List<User> userList = userDAO.findAllUser();
 		for(User user:userList){
 			//user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png", random.nextInt(1000)));
-			user.setPassword("123");
-			userDAO.updatePassword(user);
+			if(user.getUsername().equals("ygc")){
+				user.setPassword(SaltUtil.MD5("ygc"+user.getSalt()));
+				userDAO.updatePassword(user);
+			}
+
 		}
 	}
 
