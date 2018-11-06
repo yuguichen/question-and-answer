@@ -80,7 +80,7 @@ public class QuestionController {
         model.addAttribute("question",question);
         model.addAttribute("user",userService.getUser(question.getUserID()));
 
-        List<Comment> comments = commentService.getCommentsByEntity(qid,EntityType.ENTITY_QUESTION);
+        List<Comment> comments = commentService.getCommentsByEntity(qid,MyUtils.ENTITY_QUESTION);
         List<ViewObject> commentsVOList = new ArrayList<>();
         for(Comment comment : comments){
             ViewObject viewObject = new ViewObject();
@@ -89,8 +89,8 @@ public class QuestionController {
             if(hostHolder.getUser()==null)
                 viewObject.set("liked",0);
             else
-                viewObject.set("liked",likeService.getLikeStatus(hostHolder.getUser().getId(),EntityType.ENTITY_COMMENT,comment.getId()));
-            viewObject.set("likeCount",likeService.getLikeCount(EntityType.ENTITY_COMMENT,comment.getId()));
+                viewObject.set("liked",likeService.getLikeStatus(hostHolder.getUser().getId(),MyUtils.ENTITY_COMMENT,comment.getId()));
+            viewObject.set("likeCount",likeService.getLikeCount(MyUtils.ENTITY_COMMENT,comment.getId()));
             commentsVOList.add(viewObject);
         }
         model.addAttribute("comments",commentsVOList);

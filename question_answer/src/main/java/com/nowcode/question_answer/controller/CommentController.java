@@ -2,7 +2,6 @@ package com.nowcode.question_answer.controller;
 
 
 import com.nowcode.question_answer.model.Comment;
-import com.nowcode.question_answer.model.EntityType;
 import com.nowcode.question_answer.model.HostHolder;
 import com.nowcode.question_answer.service.CommentService;
 import com.nowcode.question_answer.service.QuestionService;
@@ -41,7 +40,7 @@ public class CommentController {
             comment.setContent(content);
             comment.setCreatedDate(new Date());
             comment.setEntityId(questionId);
-            comment.setEntityType(EntityType.ENTITY_QUESTION);
+            comment.setEntityType(MyUtils.ENTITY_QUESTION);
             comment.setStatus(0);
             //addComment
             commentService.addComment(comment);

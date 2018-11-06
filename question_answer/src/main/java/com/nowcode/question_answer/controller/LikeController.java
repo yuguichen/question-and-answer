@@ -1,6 +1,5 @@
 package com.nowcode.question_answer.controller;
 
-import com.nowcode.question_answer.model.EntityType;
 import com.nowcode.question_answer.model.HostHolder;
 import com.nowcode.question_answer.service.LikeService;
 import com.nowcode.question_answer.utils.MyUtils;
@@ -29,7 +28,7 @@ public class LikeController {
             return MyUtils.getJSONString(999);
         }
 
-        long likeCount = likeService.like(hostHolder.getUser().getId(),EntityType.ENTITY_COMMENT,commentId);
+        long likeCount = likeService.like(hostHolder.getUser().getId(),MyUtils.ENTITY_COMMENT,commentId);
         return MyUtils.getJSONString(0,String.valueOf(likeCount));
     }
 
@@ -39,7 +38,7 @@ public class LikeController {
         if(hostHolder.getUser()==null)
             return MyUtils.getJSONString(999);
 
-        long likeCount = likeService.disLike(hostHolder.getUser().getId(),EntityType.ENTITY_COMMENT,commentId);
+        long likeCount = likeService.disLike(hostHolder.getUser().getId(),MyUtils.ENTITY_COMMENT,commentId);
         return MyUtils.getJSONString(0,String.valueOf(likeCount));
     }
 }
