@@ -2,6 +2,7 @@ package com.nowcode.question_answer.controller;
 
 import com.nowcode.question_answer.model.*;
 import com.nowcode.question_answer.service.CommentService;
+import com.nowcode.question_answer.service.LikeService;
 import com.nowcode.question_answer.service.QuestionService;
 import com.nowcode.question_answer.service.UserService;
 import com.nowcode.question_answer.utils.MyUtils;
@@ -28,6 +29,8 @@ public class QuestionController {
     HostHolder hostHolder;
     @Autowired
     CommentService commentService;
+    @Autowired
+    LikeService likeService;
 
     /**
      * 提问
@@ -83,6 +86,11 @@ public class QuestionController {
             ViewObject viewObject = new ViewObject();
             viewObject.set("comment",comment);
             viewObject.set("user",userService.getUser(comment.getUserId()));
+            if(hostHolder.getUser()==null)
+                viewObject.set("liked",0);
+            else
+                viewObject.set("liked",likeService.getLikeStatus(hostHolder.getUser().getId(),EntityType.ENTITY_COMMENT,comment.getId()));
+            viewObject.set("likeCount",likeService.getLikeCount(EntityType.ENTITY_COMMENT,comment.getId()));
             commentsVOList.add(viewObject);
         }
         model.addAttribute("comments",commentsVOList);
