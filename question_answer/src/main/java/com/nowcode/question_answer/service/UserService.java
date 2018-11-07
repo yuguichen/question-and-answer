@@ -37,9 +37,14 @@ public class UserService {
         return loginTicket.getTicket();
     }
 
-    //登录,完成逻辑判断
-    public Map<String,String> login(String username,String password){
-        Map<String,String> map = new HashMap<>();
+    /**
+     *  完成登录逻辑判断,返回登录信息
+     * @param username
+     * @param password
+     * @return
+     */
+    public Map<String,Object> login(String username,String password){
+        Map<String,Object> map = new HashMap<>();
 
         if(StringUtils.isBlank(username)||StringUtils.isBlank(password)){
             map.put("msg","用户名或密码不能为空！");
@@ -57,12 +62,13 @@ public class UserService {
 
         String ticket = addLoginTicket(user.getId());
         map.put("ticket",ticket);
+        map.put("userId", user.getId());
         return map;
     }
 
     //注册，判断用户名和密码是否符合条件,并完成注册功能
-    public Map<String,String> register(String username,String password){
-        Map<String,String> map = new HashMap<>();
+    public Map<String,Object> register(String username,String password){
+        Map<String,Object> map = new HashMap<>();
         if(StringUtils.isBlank(username)){
             map.put("msg","用户名不能为空！");
             return map;

@@ -12,6 +12,7 @@ public class MyUtils {
     public static int ENTITY_COMMENT = 2;
 
     public static int ANONYMOUS_USER_ID = 3;  //匿名用户id
+    public static int SYSTEM_USERID = 4;
 
     public static String getJSONString(int code){
         JSONObject json = new JSONObject();

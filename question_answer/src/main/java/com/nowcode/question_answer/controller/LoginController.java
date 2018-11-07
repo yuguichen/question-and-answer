@@ -43,10 +43,10 @@ public class LoginController {
                         @RequestParam(value = "next",required = false) String next,
                         HttpServletResponse response){
         try{
-            Map<String, String> loginMap = userService.login(username, password);
+            Map<String, Object> loginMap = userService.login(username, password);
 
             if(loginMap.containsKey("ticket")){
-                Cookie cookie = new Cookie("ticket",loginMap.get("ticket"));
+                Cookie cookie = new Cookie("ticket",loginMap.get("ticket").toString());
                 cookie.setPath("/");
                 response.addCookie(cookie);
                 if(StringUtils.isNotBlank(next))
@@ -71,9 +71,9 @@ public class LoginController {
                            HttpServletResponse response){
 
         try{
-            Map<String,String> regMap = userService.register(username,password);
+            Map<String,Object> regMap = userService.register(username,password);
             if(regMap.containsKey("ticket")){
-                Cookie cookie = new Cookie("ticket",regMap.get("ticket"));
+                Cookie cookie = new Cookie("ticket",regMap.get("ticket").toString());
                 cookie.setPath("/");
                 response.addCookie(cookie);
                 if(StringUtils.isNotBlank(next))
