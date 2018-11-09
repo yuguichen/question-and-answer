@@ -1,5 +1,8 @@
 package com.nowcode.question_answer.controller;
 
+import com.nowcode.question_answer.async.EventModel;
+import com.nowcode.question_answer.async.EventProducer;
+import com.nowcode.question_answer.async.EventType;
 import com.nowcode.question_answer.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -26,6 +29,8 @@ public class LoginController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    EventProducer eventProducer;
 
     @RequestMapping(path = {"/logout"},method = {RequestMethod.GET})
     public String logout(@CookieValue("ticket") String ticket){
@@ -54,6 +59,10 @@ public class LoginController {
                 return "redirect:/";
             } else {
                 model.addAttribute("msg",loginMap.get("msg"));
+                //发送登录异常邮件
+                eventProducer.fireEvent(new EventModel(EventType.LOGIN)
+                        .setExts("username",username).setExts("email","1241402915@qq.com")
+                        .setActorId((int) loginMap.get("userId")));
                 return "login";
             }
         }catch (Exception e){
