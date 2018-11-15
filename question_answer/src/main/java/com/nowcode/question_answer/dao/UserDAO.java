@@ -33,7 +33,7 @@ public interface UserDAO {
     @Update({"update",TABLE_NAME,"set salt = #{salt} where id = #{id}"})
     int updateSalt(User user);
 
-    @Delete({"delete * from",TABLE_NAME,"where id = #{id}"})
+    @Delete({"delete from",TABLE_NAME,"where id = #{id}"})
     void deleteUserById(User user);
 
 

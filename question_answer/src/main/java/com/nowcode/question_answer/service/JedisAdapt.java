@@ -6,8 +6,11 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Transaction;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -20,6 +23,88 @@ public class JedisAdapt implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         pool = new JedisPool("redis://localhost:6379/10");
     }
+
+    public Jedis getJedis(){
+        return pool.getResource();
+    }
+
+    //开启事务
+    public Transaction multi(Jedis jedis){
+        try {
+            return jedis.multi();
+        }catch (Exception e){
+            logger.error("发生异常："+e.getMessage());
+        }
+        return null;
+    }
+
+    //执行事务
+    public List<Object> exec(Transaction transaction,Jedis jedis){
+        try {
+            return transaction.exec();
+        }catch (Exception e){
+            logger.error("发生异常："+e.getMessage());
+        } finally {
+            if(transaction!=null){
+                try{
+                    transaction.close();
+                } catch (IOException ioe) {
+                    logger.error("发生异常："+ioe.getMessage());
+                }
+            }
+            if(jedis!=null){
+                try {
+                    jedis.close();
+                } catch (Exception e){
+                    logger.error("发生异常："+e.getMessage());
+                }
+            }
+        }
+        return null;
+    }
+
+    public Set<String> zrange(String key, int start, int end){
+        Jedis jedis = null;
+        try{
+            jedis = getJedis();
+            return jedis.zrange(key,start,end);
+        }catch (Exception e){
+            logger.error("发生异常："+e.getMessage());
+        }finally {
+            if(jedis!=null)
+                jedis.close();
+        }
+        return null;
+    }
+
+    public long zadd(String key, double score, String member){
+        Jedis jedis = null;
+        try{
+            jedis = getJedis();
+            return jedis.zadd(key,score,member);
+        }catch (Exception e){
+            logger.error("发生异常："+e.getMessage());
+        }finally {
+            if(jedis!=null)
+                jedis.close();
+        }
+        return 0;
+    }
+
+    public long zrem(String key, String member){
+        Jedis jedis = null;
+        try{
+            jedis = getJedis();
+            return jedis.zrem(key,member);
+        }catch (Exception e){
+            logger.error("发生异常："+e.getMessage());
+        }finally {
+            if(jedis!=null)
+                jedis.close();
+        }
+        return 0;
+    }
+
 
     //add
     public long sadd(String key,String value){
