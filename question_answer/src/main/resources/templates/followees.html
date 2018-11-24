@@ -1,4 +1,4 @@
-#parse("header.html")
+<#include "head.html" />
 <link rel="stylesheet" href="../../styles/result.css">
 <link rel="stylesheet" href="../../styles/detail.css">
     <div id="main">
@@ -6,7 +6,7 @@
             <div class="zm-profile-section-wrap zm-profile-followee-page">
                 <div class="zm-profile-section-head">
                     <span class="zm-profile-section-name">
-                        <a href="#">${curUser.name}</a> 关注了 ${followeeCount} 人
+                        <a href="#">${curUser.username}</a> 关注了 ${followeeCount} 人
                     </span>
                 </div>
                 <div class="zm-profile-section-list">
@@ -15,7 +15,7 @@
 
                             <#list followees as vo>
                             <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard">
-                                <#if (${vo.followed})>
+                                <#if (vo.followed)>
                                 <div class="zg-right">
                                     <button class="zg-btn zg-btn-unfollow zm-rich-follow-btn small nth-0
                                     js-follow-user" data-status="1" data-id="${vo.user.id}">取消关注</button>
