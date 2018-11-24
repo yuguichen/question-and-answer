@@ -7,7 +7,9 @@ public enum EventType {
     LIKE(0),   //点赞
     COMMENT(1),//评论
     LOGIN(2),  //登录
-    MAIL(3);   //邮件
+    MAIL(3),   //邮件
+    FOLLOW(4),
+    UNFOLLOW(5);
 
     private int value;
     EventType(int value){

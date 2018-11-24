@@ -25,7 +25,6 @@ public class InitDataBaseTest {
 
 	@Autowired
 	UserDAO userDAO ;
-
 	@Autowired
 	QuestionDAO questionDAO;
 
