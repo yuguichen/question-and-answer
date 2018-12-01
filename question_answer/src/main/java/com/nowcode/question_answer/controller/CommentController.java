@@ -1,6 +1,9 @@
 package com.nowcode.question_answer.controller;
 
 
+import com.nowcode.question_answer.async.EventModel;
+import com.nowcode.question_answer.async.EventProducer;
+import com.nowcode.question_answer.async.EventType;
 import com.nowcode.question_answer.model.Comment;
 import com.nowcode.question_answer.model.HostHolder;
 import com.nowcode.question_answer.service.CommentService;
@@ -26,6 +29,8 @@ public class CommentController {
     HostHolder hostHolder;
     @Autowired
     QuestionService questionService;
+    @Autowired
+    EventProducer eventProducer;
 
     @RequestMapping(path = {"/addComment"},method = {RequestMethod.POST})
     public String addComment(@Param("content") String content,
@@ -47,6 +52,9 @@ public class CommentController {
             //评论数量
             int count = commentService.getCommentCount(comment.getEntityId(),comment.getEntityType());
             questionService.updateCommentCount(count,comment.getEntityId());
+
+            eventProducer.fireEvent(new EventModel(EventType.COMMENT).setActorId(comment.getUserId())
+                    .setEntityId(questionId));
 
         } catch(Exception e){
             logger.error("addComment error:"+e.getMessage());

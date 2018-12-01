@@ -27,6 +27,7 @@ public class EventConsumer implements InitializingBean,ApplicationContextAware{
     JedisAdapt jedisAdapt;
 
     @Override
+    //对事件类型和对应handler进行初始化匹配
     public void afterPropertiesSet() throws Exception {
         Map<String, EventHandler> beans = applicationContext.getBeansOfType(EventHandler.class);
         if(beans!=null){

@@ -12,6 +12,8 @@ public class JedisKeyUtil {
     private static String BIZ_FOLLOWER = "FOLLOWER";//粉丝
     private static String BIZ_FOLLOWEE = "FOLLOWEE";//关注对象
 
+    private static String BIZ_TIMELINE = "TIMELINE";
+
     public static String getFollowerKey(int entityType,int entityId){
         return BIZ_FOLLOWER + SPLIT + String.valueOf(entityType)+ SPLIT + String.valueOf(entityId);
     }
@@ -30,5 +32,9 @@ public class JedisKeyUtil {
 
     public static String getEventQueueKey(){
         return BIZ_EVENTQUEUE;
+    }
+
+    public static String getTimelineKey(int userId) {
+        return BIZ_TIMELINE + SPLIT + String.valueOf(userId);
     }
 }
