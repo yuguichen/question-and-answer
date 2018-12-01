@@ -5,14 +5,11 @@ import com.nowcode.question_answer.dao.UserDAO;
 import com.nowcode.question_answer.model.Question;
 import com.nowcode.question_answer.model.User;
 import com.nowcode.question_answer.utils.SaltUtil;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
 import java.util.List;
